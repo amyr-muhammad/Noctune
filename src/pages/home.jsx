@@ -1,7 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Button from "../components/button";
 
 
+
 const Home = () => {
+
+    const [selectedSound, setSelectedSound] = useState(null);
+    const navigate = useNavigate();
+
+
     return (
         <>
             <section className="bg-[url(src/assets/images/bg.jpg)] bg-cover 
@@ -13,8 +21,6 @@ const Home = () => {
                         NOCTUNE
                     </h1>
 
-
-
                     <p className="text-2xl text-center px-80 py-5 pb-15 text-gray-100 font-inter ">
                         10x you productiviy and tune your focus with Noctune specialized ambeint sounds and pomodoro timer
                     </p>
@@ -22,13 +28,24 @@ const Home = () => {
 
                     <div>
                         <p className="text-center text-xl m-5 text-gray-100">Choose a noise to get flow state</p>
-                        <Button text={"Forest"} />
-                        <Button text={"Brown"} />
-                        <Button text={"White"} />
-                        <Button text={"Birds"} />
-                        <Button text={"Rain"} />
+                        <Button text={"Forest"} onClick={() => setSelectedSound("forest")} />
+                        <Button text={"Brown"}  onClick={() => setSelectedSound("brown")}  />
+                        <Button text={"White"}  onClick={() => setSelectedSound("white")}  />
+                        <Button text={"Birds"}  onClick={() => setSelectedSound("birds")}  />
+                        <Button text={"Rain"}   onClick={() => setSelectedSound("rain")}   />
                     </div>
-                    <button className="py-2 px-8 bg-white text-gray-950 rounded-full border border-gray-800 mt-5">Start</button>
+                    <button className="py-2 px-8 bg-white text-gray-950 rounded-full border border-gray-800 mt-5" 
+                    onClick={()=>{
+                        if(!selectedSound){
+                            alert("Selec A sound")
+                            return;
+                        }
+                        navigate("/dashboard", {
+                            state: {
+                                sound: selectedSound
+                            }
+                        })
+                    }}>Start</button>
                 </div>
             </section>
         </>
