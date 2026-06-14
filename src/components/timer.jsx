@@ -3,7 +3,7 @@ import Card from "./Card";
 import { GLASS_EFFECT_INNER, RESPONSIVE_PADDING_SM } from "../constants/styles";
 import { useRef, useEffect } from "react";
 
-const Timer = ({ pomodoro, start, stop, sound }) => {
+const Timer = ({ pomodoro, start, stop, sound, running, startBreak, startFocus, isBreak }) => {
     const audioRef = useRef(null)
 
     useEffect(() => {
@@ -11,6 +11,16 @@ const Timer = ({ pomodoro, start, stop, sound }) => {
             audioRef.current.load();
         }
     }, [sound]);
+
+    useEffect(() => {
+        if (running && audioRef.current) {
+            audioRef.current.play().catch(() => {
+                console.log("Audio play failed - may be due to browser autoplay policy");
+            });
+        } else if (!running && audioRef.current) {
+            audioRef.current.pause();
+        }
+    }, [running]);
 
     const handleStart = () => {
         start();
@@ -30,6 +40,11 @@ const Timer = ({ pomodoro, start, stop, sound }) => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center sm:justify-start items-stretch sm:items-center flex-1">
                 <Button text={"Start"} onClick={handleStart} />
                 <Button text={"Pause"} onClick={handleStop} />
+                {isBreak ? (
+                    <Button text={"Focus"} onClick={startFocus} />
+                ) : (
+                    <Button text={"Break"} onClick={startBreak} />
+                )}
             </div>
             <div>
                 <audio src={sound} ref={audioRef} loop ></audio>
