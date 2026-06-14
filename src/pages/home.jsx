@@ -37,7 +37,7 @@ const Home = () => {
                     <button className="py-2 px-8 bg-white text-gray-950 rounded-full border border-gray-800 mt-5" 
                     onClick={()=>{
                         if(!selectedSound){
-                            alert("Selec A sound")
+                            alert("Select A sound")
                             return;
                         }
                         navigate("/dashboard", {
